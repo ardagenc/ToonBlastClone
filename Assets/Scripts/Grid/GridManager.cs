@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -12,9 +13,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] Grid gridPrefab;
     public Block[,] blocks;
 
-
     private void Start()
-    {        
+    {
         InitializeGrids();
     }
     public void InitializeGrids()
@@ -63,7 +63,7 @@ public class GridManager : MonoBehaviour
         }
     }
     public void SpawnNewBlocks(BlockFactory blockFactory)
-    {
+    {        
         for (int x = 0; x < width; x++)
         {
             List<int> emptyRows = new List<int>();
@@ -111,6 +111,7 @@ public class GridManager : MonoBehaviour
                 newBlock.MoveTo(targetGridPos);
             }
         }
+        
     }
     public List<Block> GetAdjacentBlocks(Vector2Int gridPos)
     {

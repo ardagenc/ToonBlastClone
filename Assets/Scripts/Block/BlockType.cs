@@ -5,5 +5,6 @@ public enum BlockType
     Blue,    
     Obstacle1,
     Obstacle2,
+    Obstacle3,
     Rocket
 }

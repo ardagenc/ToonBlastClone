@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-public class BoxBlock : Block
+public class ObstacleBlock : Block
 {
+    public bool damagable;
     public int health = 1;
     public void TakeDamage()
     {

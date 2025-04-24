@@ -151,3 +151,4 @@ MonoBehaviour:
   blockType: 3
   gridPos: {x: 0, y: 0}
   Direction: 0
+  rocketPartPrefab: {fileID: 1631002306079868554, guid: 2a24e13b920341749941cfb52feb6beb, type: 3}

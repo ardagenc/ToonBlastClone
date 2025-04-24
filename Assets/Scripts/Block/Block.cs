@@ -4,7 +4,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public static event Action<Block> BlockClicked;
-    BlockData blockData;
+    protected BlockData blockData;
 
     public SpriteRenderer spriteRenderer;
     public BlockType blockType;
@@ -13,7 +13,7 @@ public class Block : MonoBehaviour
 
     public virtual bool CanFall => blockData != null && blockData.canFall;
 
-    public void Init(int x, int y, BlockData blockData)
+    public virtual void Init(int x, int y, BlockData blockData)
     {
         gridPos = new Vector2Int(x, y);
 
@@ -24,9 +24,9 @@ public class Block : MonoBehaviour
     public void MoveTo(Vector2Int newPos)
     {
         gridPos = newPos;
-        //transform.position = new Vector2(gridPos.x, gridPos.y);
-        // Coroutine anim (Temporary)
         //StartCoroutine(MoveAnimation(gridPos));
+        //transform.position = new Vector2(gridPos.x, gridPos.y);
+        
     }
     private IEnumerator MoveAnimation(Vector2Int targetGridPos)
     {

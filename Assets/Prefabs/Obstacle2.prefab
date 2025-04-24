@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2400802817464418375}
   - component: {fileID: -2737808087233267510}
   m_Layer: 0
-  m_Name: Obstacle1 1
+  m_Name: Obstacle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,4 +103,5 @@ MonoBehaviour:
   spriteRenderer: {fileID: 2400802817464418375}
   blockType: 4
   gridPos: {x: 0, y: 0}
+  damagable: 1
   health: 2

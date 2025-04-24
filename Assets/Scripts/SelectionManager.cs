@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -12,11 +13,13 @@ public class SelectionManager : MonoBehaviour
     private void OnEnable()
     {
         Block.BlockClicked += OnBlockClicked;
+        RocketPart.onRocketMove += OnRocketMove;
     }
 
     private void OnDisable()
     {
         Block.BlockClicked -= OnBlockClicked;
+        RocketPart.onRocketMove -= OnRocketMove;
     }
 
     private void OnBlockClicked(Block clickedBlock)
@@ -26,15 +29,9 @@ public class SelectionManager : MonoBehaviour
             StartCoroutine(HandleMatchSequence(clickedBlock));
         }
         else if (clickedBlock is RocketBlock)
-        {
-            Debug.Log("ClickedBlock is ROCKET");
-            StartCoroutine(BlastColumn(clickedBlock));
+        {            
+            StartCoroutine(HandleRocketSequence(clickedBlock));
         }
-
-
-        //MatchAndDestroy(clickedBlock);
-        //gridManager.CollapseAll();
-        //gridManager.SpawnNewBlocks(blockFactory);
     }
 
     public void MatchAndDestroy(Block clickedBlock)
@@ -51,9 +48,10 @@ public class SelectionManager : MonoBehaviour
                 foreach (Block neighbor in adjacent)
                 {
                     // Think about IObstacle interface and damagetype enum.
-                    if (neighbor is BoxBlock box)
-                    {                        
-                        box.TakeDamage();                        
+                    if (neighbor is ObstacleBlock box)
+                    {         
+                        if (box.damagable)
+                            box.TakeDamage();                        
                     }
                 }
 
@@ -64,9 +62,10 @@ public class SelectionManager : MonoBehaviour
             if (matchedBlocks.Count >= 4)
             {
                 // Temporary
-                BlockData rocketData = blockDatabase.blockDataList[5];
+                BlockData rocketData = blockDatabase.blockDataList[6];
 
-                Block rocket = blockFactory.CreateBlock(rocketData, clickedBlock.gridPos);
+                RocketBlock rocket = (RocketBlock)blockFactory.CreateBlock(rocketData, clickedBlock.gridPos);
+
                 gridManager.SetBlockAt(rocket.gridPos, rocket);
             }
         }
@@ -75,53 +74,66 @@ public class SelectionManager : MonoBehaviour
     IEnumerator HandleMatchSequence(Block clickedBlock)
     {
         MatchAndDestroy(clickedBlock);
-        yield return new WaitForSeconds(0.2f);          // patlama efekti varsa bekle
 
+        yield return new WaitForSeconds(0.2f);
         gridManager.CollapseAll();
-        //yield return new WaitForSeconds(1f);          // blok düşme animasyonu varsa bekle
-
         gridManager.SpawnNewBlocks(blockFactory);
         yield return new WaitForSeconds(0.2f);
-
-        //yield return StartCoroutine(CheckForMatchesAgain()); // zincirleme varsa
     }
 
-    IEnumerator BlastColumn(Block clickedBlock)
+    IEnumerator HandleRocketSequence(Block clickedBlock)
     {
-        int x = clickedBlock.gridPos.x;
-        Destroy(clickedBlock.gameObject);
-        // Yukarı
-        for (int y = clickedBlock.gridPos.y + 1; y < gridManager.height; y++)
+        List<Block> adjacent = gridManager.GetAdjacentBlocks(clickedBlock.gridPos);
+
+        RocketBlock rocket = (RocketBlock)clickedBlock;
+        bool hasAdjacentRocket = false;
+
+        foreach (var block in adjacent)
         {
-            Vector2Int pos = new Vector2Int(x, y);
-            Block b = gridManager.GetBlockAt(pos);
-
-            if (b != null)
+            if (block is RocketBlock)
             {
-                Destroy(b.gameObject);
-                gridManager.SetBlockAt(pos, null);
+                hasAdjacentRocket = true;
+                break;
             }
-
-            yield return new WaitForSeconds(0.05f);
         }
 
-        // Aşağı
-        for (int y = clickedBlock.gridPos.y - 1; y >= 0; y--)
+        if (hasAdjacentRocket)
         {
-            Vector2Int pos = new Vector2Int(x, y);
-            Block b = gridManager.GetBlockAt(pos);
-
-            if (b != null)
-            {
-                Destroy(b.gameObject);
-                gridManager.SetBlockAt(pos, null);
-            }
-
-            yield return new WaitForSeconds(0.05f);
+            rocket.ComboRocketActivate();
+        }
+        else
+        {
+            rocket.Activate();
         }
 
+        yield return new WaitForSeconds(0.2f);
         gridManager.CollapseAll();
         gridManager.SpawnNewBlocks(blockFactory);
+        yield return new WaitForSeconds(0.2f);        
+    }
+    public void OnRocketMove(Vector2Int gridPos, GameObject rocketPart)
+    {
+        if (!gridManager.IsInBounds(gridPos))
+        {
+            Destroy(rocketPart);
+        }
+        else
+        {
+            Block block = gridManager.GetBlockAt(gridPos);
+            if (block != null)
+            {
+                if (block is ObstacleBlock obstacle)
+                {
+                    obstacle.TakeDamage();
+                }
+                else
+                {
+                    Destroy(block.gameObject);
+                    gridManager.SetBlockAt(gridPos, null);
+                }
+                
+            }
+        }
     }
 
 }

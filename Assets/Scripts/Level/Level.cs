@@ -33,6 +33,9 @@ public class Level
                     case "ob2":
                         blockType[x, y] = BlockType.Obstacle2;
                         break;
+                    case "ob3":
+                        blockType[x, y] = BlockType.Obstacle3;
+                        break;
                     case "rand":
                         blockType[x, y] = ((BlockType[])Enum.GetValues(typeof(BlockType)))[UnityEngine.Random.Range(0, 3)];
                         break;
