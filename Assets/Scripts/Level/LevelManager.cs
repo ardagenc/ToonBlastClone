@@ -1,19 +1,25 @@
+using System;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public static event Action OnLevelGenerated;
+
     [SerializeField] BlockDatabase blockDatabase;
     [SerializeField] BlockFactory blockFactory;
     [SerializeField] GridManager gridManager;
     Level level;
 
+    public Level Level { get => level; set => level = value; }
+
     private void Start()
     {
         GenerateLevel();
+        OnLevelGenerated?.Invoke();
     }
     public void GenerateLevel()
     {
-        level = new Level(gridManager.levelData);
+        Level = new Level(gridManager.levelData);
 
         for (int y = 0; y < gridManager.levelData.grid_height; y++)
         {
@@ -21,7 +27,7 @@ public class LevelManager : MonoBehaviour
             {
                 Vector2Int pos = new Vector2Int(x, y);
 
-                BlockType blockType = level.blockType[x, y];
+                BlockType blockType = Level.blockType[x, y];
                 BlockData blockData = blockDatabase.GetBlockData(blockType);
 
                 Block block = blockFactory.CreateBlock(blockData, pos);
@@ -29,9 +35,9 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
-    public LevelData GetLevelInfo()
+    public LevelData GetLevelInfo(int level)
     {
-        TextAsset lvlJson = Resources.Load<TextAsset>("Levels/level_01");
+        TextAsset lvlJson = Resources.Load<TextAsset>("Levels/level_" + level.ToString("00"));
         return JsonUtility.FromJson<LevelData>(lvlJson.text);
     }
 }

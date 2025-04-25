@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class SelectionManager : MonoBehaviour
 {
+    public static event Action onMatchFound;
+
     [SerializeField] private GridManager gridManager;
     [SerializeField] private Matchfinder matchFinder;
     [SerializeField] private BlockFactory blockFactory;
@@ -12,13 +14,13 @@ public class SelectionManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Block.BlockClicked += OnBlockClicked;
+        Block.onBlockClicked += OnBlockClicked;
         RocketPart.onRocketMove += OnRocketMove;
     }
 
     private void OnDisable()
     {
-        Block.BlockClicked -= OnBlockClicked;
+        Block.onBlockClicked -= OnBlockClicked;
         RocketPart.onRocketMove -= OnRocketMove;
     }
 
@@ -34,7 +36,7 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-    public void MatchAndDestroy(Block clickedBlock)
+    public bool MatchAndDestroy(Block clickedBlock)
     {
         var matchedBlocks = matchFinder.FindMatches(clickedBlock);
 
@@ -42,21 +44,20 @@ public class SelectionManager : MonoBehaviour
         {
             foreach (var block in matchedBlocks)
             {
-                List<Block> adjacent = gridManager.GetAdjacentBlocks(block.gridPos);
-
-
+                List<Block> adjacent = gridManager.GetAdjacentBlocks(block.GridPos);
+                
                 foreach (Block neighbor in adjacent)
-                {
+                {                    
                     // Think about IObstacle interface and damagetype enum.
                     if (neighbor is ObstacleBlock box)
-                    {         
+                    {
                         if (box.damagable)
                             box.TakeDamage();                        
-                    }
+                    }                
                 }
 
                 Destroy(block.gameObject);
-                gridManager.SetBlockAt(block.gridPos, null);
+                gridManager.SetBlockAt(block.GridPos, null);
             }
 
             if (matchedBlocks.Count >= 4)
@@ -64,26 +65,32 @@ public class SelectionManager : MonoBehaviour
                 // Temporary
                 BlockData rocketData = blockDatabase.blockDataList[6];
 
-                RocketBlock rocket = (RocketBlock)blockFactory.CreateBlock(rocketData, clickedBlock.gridPos);
+                RocketBlock rocket = (RocketBlock)blockFactory.CreateBlock(rocketData, clickedBlock.GridPos);
 
-                gridManager.SetBlockAt(rocket.gridPos, rocket);
+                gridManager.SetBlockAt(rocket.GridPos, rocket);
             }
+            return true;
         }
+
+        return false;
     }
 
     IEnumerator HandleMatchSequence(Block clickedBlock)
     {
-        MatchAndDestroy(clickedBlock);
+        bool matchFound = MatchAndDestroy(clickedBlock);        
 
         yield return new WaitForSeconds(0.2f);
         gridManager.CollapseAll();
         gridManager.SpawnNewBlocks(blockFactory);
-        yield return new WaitForSeconds(0.2f);
+
+        if (matchFound) onMatchFound?.Invoke();
+
+        yield return null;
     }
 
     IEnumerator HandleRocketSequence(Block clickedBlock)
     {
-        List<Block> adjacent = gridManager.GetAdjacentBlocks(clickedBlock.gridPos);
+        List<Block> adjacent = gridManager.GetAdjacentBlocks(clickedBlock.GridPos);
 
         RocketBlock rocket = (RocketBlock)clickedBlock;
         bool hasAdjacentRocket = false;
@@ -106,10 +113,14 @@ public class SelectionManager : MonoBehaviour
             rocket.Activate();
         }
 
+
+
         yield return new WaitForSeconds(0.2f);
         gridManager.CollapseAll();
         gridManager.SpawnNewBlocks(blockFactory);
-        yield return new WaitForSeconds(0.2f);        
+
+        onMatchFound?.Invoke();
+        yield return null;        
     }
     public void OnRocketMove(Vector2Int gridPos, GameObject rocketPart)
     {

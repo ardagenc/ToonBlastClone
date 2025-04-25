@@ -22,19 +22,19 @@ public class Matchfinder : MonoBehaviour
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
-            if (visited.Contains(current.gridPos)) continue;
+            if (visited.Contains(current.GridPos)) continue;
 
-            visited.Add(current.gridPos);
+            visited.Add(current.GridPos);
             result.Add(current);
 
             foreach (var direction in Directions)
             {
-                var neighborPos = current.gridPos + direction;
+                var neighborPos = current.GridPos + direction;
 
                 if (!gridManager.IsInBounds(neighborPos)) continue;
                 var neighbor = gridManager.GetBlockAt(neighborPos);
 
-                if (neighbor != null && neighbor.blockType == startingBlock.blockType)
+                if (neighbor != null && neighbor.BlockType == startingBlock.BlockType)
                 {
                     queue.Enqueue(neighbor);
                 }

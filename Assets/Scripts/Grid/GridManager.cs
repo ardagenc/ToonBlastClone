@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class GridManager : MonoBehaviour
 {
-    public int width;
-    public int height;
+    private int width;
+    private int height;
 
     [SerializeField] LevelManager levelManager;
     public LevelData levelData;
-    [SerializeField] Grid gridPrefab;
-    public Block[,] blocks;
+    private Block[,] blocks;
 
     private void Start()
     {
@@ -19,7 +17,7 @@ public class GridManager : MonoBehaviour
     }
     public void InitializeGrids()
     {
-        levelData = levelManager.GetLevelInfo();
+        levelData = levelManager.GetLevelInfo(3);
         width = levelData.grid_width;
         height = levelData.grid_height;
 
@@ -134,11 +132,15 @@ public class GridManager : MonoBehaviour
                 Block neighbor = blocks[neighborPos.x, neighborPos.y];
                 if (neighbor != null && !adjacentBlocks.Contains(neighbor))
                 {
+                    if (neighbor is ObstacleBlock obstacle)
+                    {
+                        obstacle.name = "OBSTACLE";
+                        Debug.Log(obstacle.name);
+                    }
                     adjacentBlocks.Add(neighbor);
                 }
             }
         }
-
         return adjacentBlocks;
     }
 

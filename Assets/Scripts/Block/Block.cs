@@ -3,27 +3,31 @@ using System.Collections;
 using UnityEngine;
 public class Block : MonoBehaviour
 {
-    public static event Action<Block> BlockClicked;
+    public static event Action<Block> onBlockClicked;
+
+    [SerializeField] protected SpriteRenderer spriteRenderer;
     protected BlockData blockData;
+    protected BlockType blockType;
 
-    public SpriteRenderer spriteRenderer;
-    public BlockType blockType;
+    private Vector2Int gridPos;
 
-    public Vector2Int gridPos;
 
     public virtual bool CanFall => blockData != null && blockData.canFall;
 
+    public BlockType BlockType { get => blockType; set => blockType = value; }
+    public Vector2Int GridPos { get => gridPos; set => gridPos = value; }
+
     public virtual void Init(int x, int y, BlockData blockData)
     {
-        gridPos = new Vector2Int(x, y);
+        GridPos = new Vector2Int(x, y);
 
         this.blockData = blockData;
-        blockType = blockData.blockType;
+        BlockType = blockData.blockType;
         spriteRenderer.sprite = blockData.defaultSprite;
     }
     public void MoveTo(Vector2Int newPos)
     {
-        gridPos = newPos;
+        GridPos = newPos;
         //StartCoroutine(MoveAnimation(gridPos));
         //transform.position = new Vector2(gridPos.x, gridPos.y);
         
@@ -36,18 +40,18 @@ public class Block : MonoBehaviour
             yield return null;
         }
 
-        transform.position = new Vector2(gridPos.x, gridPos.y);
+        transform.position = new Vector2(GridPos.x, GridPos.y);
     }
     public void Fall()
     {
-        if (((Vector2)transform.position - (Vector2)gridPos).sqrMagnitude > 0.001f)
+        if (((Vector2)transform.position - (Vector2)GridPos).sqrMagnitude > 0.001f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, gridPos, 15 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, GridPos, 15 * Time.deltaTime);
         }
     }
     private void OnMouseDown()
     {
-        BlockClicked?.Invoke(this);
+        onBlockClicked?.Invoke(this);
     }
 
     private void Update()

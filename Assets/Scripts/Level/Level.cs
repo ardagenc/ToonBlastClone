@@ -5,8 +5,16 @@ public class Level
 {
     public BlockType[,] blockType;
 
+    public int moveCount;
+
+    public int obstacle1Amount = 0;
+    public int obstacle2Amount = 0;
+    public int obstacle3Amount = 0;
+
     public Level(LevelData levelData)
     {
+        moveCount = levelData.move_count;
+
         blockType = new BlockType[levelData.grid_width, levelData.grid_height];
         int gridIndex = 0;
 
@@ -29,12 +37,15 @@ public class Level
                         break;
                     case "ob1":
                         blockType[x, y] = BlockType.Obstacle1;
+                        obstacle1Amount++;
                         break;
                     case "ob2":
                         blockType[x, y] = BlockType.Obstacle2;
+                        obstacle2Amount++;
                         break;
                     case "ob3":
                         blockType[x, y] = BlockType.Obstacle3;
+                        obstacle3Amount++;
                         break;
                     case "rand":
                         blockType[x, y] = ((BlockType[])Enum.GetValues(typeof(BlockType)))[UnityEngine.Random.Range(0, 3)];
