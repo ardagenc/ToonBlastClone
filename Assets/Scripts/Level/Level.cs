@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Level
@@ -7,14 +8,20 @@ public class Level
 
     public int moveCount;
 
-    public int obstacle1Amount = 0;
-    public int obstacle2Amount = 0;
-    public int obstacle3Amount = 0;
-
-    public Level(LevelData levelData)
+    [System.Serializable]
+    public struct ObstacleData
     {
-        moveCount = levelData.move_count;
+        public BlockType blockType;
+        public Sprite sprite;
+        public int amount;
+    }
 
+    public List<ObstacleData> obstacles = new List<ObstacleData>();
+    Dictionary<BlockType, int> obstacleCounter = new Dictionary<BlockType, int>();
+    public Level(LevelData levelData, BlockDatabase blockDatabase)
+    {
+        moveCount = levelData.move_count;        
+        
         blockType = new BlockType[levelData.grid_width, levelData.grid_height];
         int gridIndex = 0;
 
@@ -37,15 +44,15 @@ public class Level
                         break;
                     case "ob1":
                         blockType[x, y] = BlockType.Obstacle1;
-                        obstacle1Amount++;
+                        IncrementObstacleCounter(obstacleCounter, BlockType.Obstacle1);
                         break;
                     case "ob2":
                         blockType[x, y] = BlockType.Obstacle2;
-                        obstacle2Amount++;
+                        IncrementObstacleCounter(obstacleCounter, BlockType.Obstacle2);
                         break;
                     case "ob3":
                         blockType[x, y] = BlockType.Obstacle3;
-                        obstacle3Amount++;
+                        IncrementObstacleCounter(obstacleCounter, BlockType.Obstacle3);
                         break;
                     case "rand":
                         blockType[x, y] = ((BlockType[])Enum.GetValues(typeof(BlockType)))[UnityEngine.Random.Range(0, 3)];
@@ -54,6 +61,26 @@ public class Level
                         break;
                 }
             }
+        
+        foreach (var kvp in obstacleCounter)
+        {                     
+            BlockData blockData = blockDatabase.GetBlockData(kvp.Key);
+            
+            obstacles.Add(new ObstacleData
+            {
+                blockType = kvp.Key,
+                sprite = blockData.defaultSprite,
+                amount = kvp.Value
+            });
+        }
+    }
+
+    private void IncrementObstacleCounter(Dictionary<BlockType, int> counter, BlockType type)
+    {
+        if (counter.ContainsKey(type))
+            counter[type]++;
+        else
+            counter[type] = 1;
     }
 
 }

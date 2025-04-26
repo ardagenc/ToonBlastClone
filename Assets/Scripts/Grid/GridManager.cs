@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         InitializeGrids();
+        GetAdjacentBlocks(new Vector2Int(0, 1));
     }
     public void InitializeGrids()
     {
@@ -132,14 +133,9 @@ public class GridManager : MonoBehaviour
                 Block neighbor = blocks[neighborPos.x, neighborPos.y];
                 if (neighbor != null && !adjacentBlocks.Contains(neighbor))
                 {
-                    if (neighbor is ObstacleBlock obstacle)
-                    {
-                        obstacle.name = "OBSTACLE";
-                        Debug.Log(obstacle.name);
-                    }
                     adjacentBlocks.Add(neighbor);
                 }
-            }
+            }            
         }
         return adjacentBlocks;
     }

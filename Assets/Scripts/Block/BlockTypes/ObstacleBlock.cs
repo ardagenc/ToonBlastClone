@@ -17,8 +17,7 @@ public class ObstacleBlock : Block
         }
     }
     private void DestroyBlock()
-    {
-        Debug.Log("DESTROYED");
+    {        
         onObstacleDestroyed?.Invoke(blockType);
         Destroy(gameObject);
     }

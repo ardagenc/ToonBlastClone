@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public static event Action OnLevelGenerated;
+    public static event Action onLevelGenerated;
 
     [SerializeField] BlockDatabase blockDatabase;
     [SerializeField] BlockFactory blockFactory;
@@ -15,11 +15,11 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         GenerateLevel();
-        OnLevelGenerated?.Invoke();
+        onLevelGenerated?.Invoke();
     }
     public void GenerateLevel()
     {
-        Level = new Level(gridManager.levelData);
+        Level = new Level(gridManager.levelData, blockDatabase);
 
         for (int y = 0; y < gridManager.levelData.grid_height; y++)
         {

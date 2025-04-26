@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
@@ -42,23 +43,49 @@ public class SelectionManager : MonoBehaviour
 
         if (matchedBlocks.Count >= 3)
         {
+            HashSet<Block> uniqueBlocks = new HashSet<Block>();
+
             foreach (var block in matchedBlocks)
             {
-                List<Block> adjacent = gridManager.GetAdjacentBlocks(block.GridPos);
-                
-                foreach (Block neighbor in adjacent)
-                {                    
-                    // Think about IObstacle interface and damagetype enum.
-                    if (neighbor is ObstacleBlock box)
-                    {
-                        if (box.damagable)
-                            box.TakeDamage();                        
-                    }                
+                foreach (var neighbor in gridManager.GetAdjacentBlocks(block.GridPos))
+                {
+                    if (!uniqueBlocks.Contains(neighbor))
+                        uniqueBlocks.Add(neighbor);
                 }
 
                 Destroy(block.gameObject);
                 gridManager.SetBlockAt(block.GridPos, null);
+
             }
+            foreach (Block neighbor in uniqueBlocks)
+            {
+
+                // Think about IObstacle interface and damagetype enum.
+                if (neighbor is ObstacleBlock box)
+                {
+                    if (box.damagable)
+                        box.TakeDamage();
+                }
+            }
+            
+
+            //foreach (var block in matchedBlocks)
+            //{
+            //    List<Block> adjacent = gridManager.GetAdjacentBlocks(block.GridPos);                
+
+            //    foreach (Block neighbor in adjacent)
+            //    {   
+            //        // Think about IObstacle interface and damagetype enum.
+            //        if (neighbor is ObstacleBlock box)
+            //        {
+            //            if (box.damagable)
+            //                box.TakeDamage();                        
+            //        }                
+            //    }
+
+            //    Destroy(block.gameObject);
+            //    gridManager.SetBlockAt(block.GridPos, null);
+            //}
 
             if (matchedBlocks.Count >= 4)
             {

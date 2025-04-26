@@ -3,5 +3,5 @@
        "grid_width": 9,
        "grid_height": 10,
        "move_count": 20,
-  "grid": [ "ob1", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "g", "b", "b", "b", "b", "y", "y", "y", "y", "g", "y", "y", "y", "y", "b", "b", "b", "b", "y", "r", "r", "r", "r", "rand", "rand", "rand", "rand", "y", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "r", "r", "r", "r", "ob2", "ob2", "ob2", "ob2", "ob2", "r", "r", "r", "r", "r", "r", "r", "r", "r", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand" ]
+  "grid": [ "ob1", "r", "y", "r", "r", "r", "r", "r", "r", "r", "r", "y", "y", "g", "b", "b", "b", "b", "y", "y", "y", "y", "g", "y", "y", "y", "y", "b", "b", "b", "b", "y", "r", "r", "r", "r", "rand", "rand", "rand", "rand", "y", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "r", "r", "r", "r", "ob2", "ob2", "ob2", "ob2", "ob2", "r", "r", "r", "r", "r", "r", "r", "r", "r", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand", "rand" ]
 }

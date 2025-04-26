@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class GoalManager : MonoBehaviour
@@ -10,52 +11,39 @@ public class GoalManager : MonoBehaviour
     {
         ObstacleBlock.onObstacleDestroyed += OnObstacleDestroyed;
         SelectionManager.onMatchFound += OnMatchFound;
-        LevelManager.OnLevelGenerated += OnLevelGenerated;
+        LevelManager.onLevelGenerated += OnLevelGenerated;
         
     }
     private void OnDisable()
     {
         ObstacleBlock.onObstacleDestroyed -= OnObstacleDestroyed;
         SelectionManager.onMatchFound -= OnMatchFound;
-        LevelManager.OnLevelGenerated -= OnLevelGenerated;
+        LevelManager.onLevelGenerated -= OnLevelGenerated;
 
     }
+    private void Update()
+    {
+        Debug.Log(levelManager.Level.moveCount);
 
+    }
     private void OnLevelGenerated()
     {
-        totalObstacleAmount = levelManager.Level.obstacle1Amount +
-                                    levelManager.Level.obstacle2Amount +
-                                    levelManager.Level.obstacle3Amount;
+        totalObstacleAmount = levelManager.Level.obstacles.Sum(o => o.amount);
     }
 
 
     private void OnObstacleDestroyed(BlockType blockType)
     {
-        switch (blockType)
-        {
-            case BlockType.Obstacle1:
-                levelManager.Level.obstacle1Amount--;
-                break;
-            case BlockType.Obstacle2:
-                levelManager.Level.obstacle2Amount--;
-                break;
-            case BlockType.Obstacle3:
-                levelManager.Level.obstacle3Amount--;
-                break;
-            default:
-                break;
-        }
-        totalObstacleAmount = levelManager.Level.obstacle1Amount +
-                            levelManager.Level.obstacle2Amount +
-                            levelManager.Level.obstacle3Amount;
+        Level.ObstacleData obstacle = levelManager.Level.obstacles.FirstOrDefault(o => o.blockType == blockType);
+
+        obstacle.amount--;
+        totalObstacleAmount--;
     }
 
     private void OnMatchFound()
     {
         levelManager.Level.moveCount--;
-
-        Debug.Log(levelManager.Level.obstacle1Amount + " " + levelManager.Level.obstacle2Amount + " " + levelManager.Level.obstacle3Amount);
-
+        
         if (totalObstacleAmount == 0 && levelManager.Level.moveCount >= 0)
         {
             Debug.Log("WON");
