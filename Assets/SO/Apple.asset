@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a08d29dd11e0842b8b0a8a81fb7131, type: 3}
+  m_Name: Apple
+  m_EditorClassIdentifier: 
+  blockName: Red
+  blockType: 0
+  blockPrefab: {fileID: 1631002306079868554, guid: bac293a2326f1c64aaac6614f0fec98a, type: 3}
+  canFall: 1
+  defaultSprite: {fileID: 21300000, guid: 0523a6084977a90498bd916d62a4c56c, type: 3}
+  frames:
+  - {fileID: 2617937143432959108, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 661344736828744240, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 3703311335361732305, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: -2807474599849486884, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 2902618981245680154, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 8676500636845467453, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: -2349655738553891619, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 7304450586249297742, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 4926440563619911938, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 1480320734798080830, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 4616060552725788017, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}
+  - {fileID: 1917467241744308630, guid: 78298cab6c2c66145a5136250c3a75e1, type: 3}

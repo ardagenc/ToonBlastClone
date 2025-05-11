@@ -8,5 +8,5 @@ public class BlockData : ScriptableObject
     public GameObject blockPrefab;
     public bool canFall;
     public Sprite defaultSprite;
-    public Sprite hintSprite;
+    public Sprite[] frames;
 }

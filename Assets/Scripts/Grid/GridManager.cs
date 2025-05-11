@@ -1,46 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class GridManager : MonoBehaviour
 {
+    [SerializeField] LevelManager levelManager;
+
     private int width;
     private int height;
 
-    [SerializeField] LevelManager levelManager;
-    public LevelData levelData;
-    private Block[,] blocks;
+    LevelData levelData;
+    Block[,] blocks;
+
+    public int Width { get => width; set => width = value; }
+    public int Height { get => height; set => height = value; }
+    public Block[,] Blocks { get => blocks; set => blocks = value; }
 
     private void Start()
     {
+        DOTween.SetTweensCapacity(500, 50);
         InitializeGrids();
         GetAdjacentBlocks(new Vector2Int(0, 1));
     }
+
     public void InitializeGrids()
     {
-        levelData = levelManager.GetLevelInfo(3);
-        width = levelData.grid_width;
-        height = levelData.grid_height;
+        levelData = levelManager.LevelData;
+        Width = levelData.grid_width;
+        Height = levelData.grid_height;
 
-        blocks = new Block[levelData.grid_width, levelData.grid_height];
+        Blocks = new Block[levelData.grid_width, levelData.grid_height];
     }
     public void CollapseColumn(int x)
     {
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            if (blocks[x, y] == null)
+            if (Blocks[x, y] == null)
             {
-                for (int ny = y + 1; ny < height; ny++)
+                for (int ny = y + 1; ny < Height; ny++)
                 {
-                    if (blocks[x, ny] != null)
+                    if (Blocks[x, ny] != null)
                     {                                                
-                        Block movingBlock = blocks[x, ny];
+                        Block movingBlock = Blocks[x, ny];
                         
 
                         if (movingBlock != null && movingBlock.CanFall)
                         {
-                            blocks[x, y] = movingBlock;
-                            blocks[x, ny] = null;
+                            Blocks[x, y] = movingBlock;
+                            Blocks[x, ny] = null;
                             movingBlock.MoveTo(new Vector2Int(x, y));
                         }
                         else
@@ -56,24 +64,24 @@ public class GridManager : MonoBehaviour
     }
     public void CollapseAll()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
             CollapseColumn(x);
         }
     }
     public void SpawnNewBlocks(BlockFactory blockFactory)
     {        
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
             List<int> emptyRows = new List<int>();
 
-            for (int y = height - 1; y >= 0; y--)
+            for (int y = Height - 1; y >= 0; y--)
             {
-                if (blocks[x, y] != null && !blocks[x, y].CanFall)
+                if (Blocks[x, y] != null && !Blocks[x, y].CanFall)
                 {
                     break;
                 }
-                else if (blocks[x, y] == null)
+                else if (Blocks[x, y] == null)
                 {
                     emptyRows.Add(y);
                 }
@@ -83,13 +91,13 @@ public class GridManager : MonoBehaviour
             if (emptyRows.Count == 0)
                 continue;
 
-            float spawnStartY = height;
+            float spawnStartY = Height;
 
-            for (int y = height - 1; y >= 0; y--)
+            for (int y = Height - 1; y >= 0; y--)
             {
-                if (blocks[x, y] != null)
+                if (Blocks[x, y] != null)
                 {                   
-                    spawnStartY = Mathf.Max(spawnStartY, blocks[x, y].transform.position.y + 1);
+                    spawnStartY = Mathf.Max(spawnStartY, Blocks[x, y].transform.position.y + 1);
                     break;
                 }
             }
@@ -105,7 +113,7 @@ public class GridManager : MonoBehaviour
                 BlockData randomData = blockFactory.GetRandomBlockData();
                 Block newBlock = blockFactory.CreateBlock(randomData, spawnGridPos);
 
-                blocks[x, targetY] = newBlock;
+                Blocks[x, targetY] = newBlock;
 
                 newBlock.MoveTo(targetGridPos);
             }
@@ -130,7 +138,7 @@ public class GridManager : MonoBehaviour
 
             if (IsInBounds(neighborPos))
             {
-                Block neighbor = blocks[neighborPos.x, neighborPos.y];
+                Block neighbor = Blocks[neighborPos.x, neighborPos.y];
                 if (neighbor != null && !adjacentBlocks.Contains(neighbor))
                 {
                     adjacentBlocks.Add(neighbor);
@@ -142,15 +150,15 @@ public class GridManager : MonoBehaviour
 
     public void SetBlockAt(Vector2Int pos, Block block)
     {
-        blocks[pos.x, pos.y] = block;
+        Blocks[pos.x, pos.y] = block;
     }
 
     public Block GetBlockAt(Vector2Int pos)
     {
-        return blocks[pos.x, pos.y];
+        return Blocks[pos.x, pos.y];
     }
     public bool IsInBounds(Vector2Int pos)
     {
-        return pos.x >= 0 && pos.y >= 0 && pos.x < width && pos.y < height;
+        return pos.x >= 0 && pos.y >= 0 && pos.x < Width && pos.y < Height;
     }
 }

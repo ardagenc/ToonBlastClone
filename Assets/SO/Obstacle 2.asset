@@ -16,5 +16,5 @@ MonoBehaviour:
   blockType: 4
   blockPrefab: {fileID: 1631002306079868554, guid: 8dd87881fa44114479ea34b6220fda6c, type: 3}
   canFall: 1
-  defaultSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  hintSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  defaultSprite: {fileID: 3415579226381933368, guid: 6bdae0ce455f84544be76779c187a58c, type: 3}
+  frames: []

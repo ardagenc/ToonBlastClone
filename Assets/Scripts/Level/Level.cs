@@ -31,16 +31,16 @@ public class Level
                 switch (levelData.grid[gridIndex++])
                 {
                     case "r":
-                        blockType[x, y] = BlockType.Red;
+                        blockType[x, y] = BlockType.Apple;
                         break;
                     case "g":
-                        blockType[x, y] = BlockType.Green;
+                        blockType[x, y] = BlockType.Grapes;
                         break;
                     case "b":
-                        blockType[x, y] = BlockType.Blue;
+                        blockType[x, y] = BlockType.Banana;
                         break;
                     case "y":
-                        blockType[x, y] = BlockType.Blue;
+                        blockType[x, y] = BlockType.Banana;
                         break;
                     case "ob1":
                         blockType[x, y] = BlockType.Obstacle1;
@@ -56,6 +56,9 @@ public class Level
                         break;
                     case "rand":
                         blockType[x, y] = ((BlockType[])Enum.GetValues(typeof(BlockType)))[UnityEngine.Random.Range(0, 3)];
+                        break;
+                    case "rocket":
+                        blockType[x, y] = BlockType.Knife;
                         break;
                     default:
                         break;

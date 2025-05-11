@@ -8,11 +8,17 @@ public class BlockFactory : MonoBehaviour
 
     public Block CreateBlock(BlockData blockData, Vector2 gridPos)
     {
-        GameObject blockGO = Instantiate(blockData.blockPrefab, gridPos, Quaternion.identity);
+        Block block = PoolManager.Instance.GetBlock(blockData.blockType);
+        block.transform.position = gridPos;
+        block.gameObject.SetActive(true);
 
-        Block block = blockGO.GetComponent<Block>();
         block.Init((int)gridPos.x, (int)gridPos.y,blockData);
         return block;
+    }
+
+    public void ReturnBlock(Block block)
+    {
+        PoolManager.Instance.ReturnBlock(block, block.BlockType);
     }
 
     public BlockData GetRandomBlockData()

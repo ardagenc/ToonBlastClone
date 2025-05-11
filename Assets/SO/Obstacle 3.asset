@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a08d29dd11e0842b8b0a8a81fb7131, type: 3}
   m_Name: Obstacle 3
   m_EditorClassIdentifier: 
-  blockName: Obstacle 2
+  blockName: Obstacle 3
   blockType: 5
   blockPrefab: {fileID: 1631002306079868554, guid: c355a0a7e16d10c47b5bb34eb3554757, type: 3}
   canFall: 0
-  defaultSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  hintSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  defaultSprite: {fileID: 3452003437791708593, guid: e2ed804597fb83c4fade8cf7c2ae02f0, type: 3}
+  frames: []

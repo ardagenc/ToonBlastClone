@@ -1,10 +1,11 @@
 public enum BlockType
 {
-    Red,
-    Green,
-    Blue,    
+    Apple,
+    Grapes,
+    Banana,    
     Obstacle1,
     Obstacle2,
     Obstacle3,
-    Rocket
+    Knife,
+    Juice
 }

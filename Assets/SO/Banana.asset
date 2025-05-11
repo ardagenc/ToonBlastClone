@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a08d29dd11e0842b8b0a8a81fb7131, type: 3}
+  m_Name: Banana
+  m_EditorClassIdentifier: 
+  blockName: Banana
+  blockType: 2
+  blockPrefab: {fileID: 1631002306079868554, guid: bac293a2326f1c64aaac6614f0fec98a, type: 3}
+  canFall: 1
+  defaultSprite: {fileID: 21300000, guid: 20a8fe8b69dd6f24e91aa61233648205, type: 3}
+  frames:
+  - {fileID: -2810017090635341533, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -3597791311275921851, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: 6740924554437787639, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: 7698065922635498732, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -2678290363932802675, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: 1131597578610946010, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -1901903990307451084, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: 1635397045338776061, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -2152576042540508626, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -2653607130099203233, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: -1476108682059886738, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}
+  - {fileID: 5530074711515964777, guid: 1e46ff16ad4123742beb3d2d81e3063a, type: 3}

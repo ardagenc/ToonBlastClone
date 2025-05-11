@@ -9,9 +9,17 @@ public class LevelManager : MonoBehaviour
     [SerializeField] BlockFactory blockFactory;
     [SerializeField] GridManager gridManager;
     Level level;
+    LevelData levelData;
 
     public Level Level { get => level; set => level = value; }
+    public LevelData LevelData { get => levelData; set => levelData = value; }
 
+    private void Awake()
+    {
+        //SaveData saveData = SaveManager.LoadProgress();
+        //LevelData = GetLevelInfo(saveData.unlockedLevel);
+        LevelData = GetLevelInfo(GameManager.Instance.LevelProgress.GetLevel());
+    }
     private void Start()
     {
         GenerateLevel();
@@ -19,11 +27,11 @@ public class LevelManager : MonoBehaviour
     }
     public void GenerateLevel()
     {
-        Level = new Level(gridManager.levelData, blockDatabase);
+        Level = new Level(LevelData, blockDatabase);
 
-        for (int y = 0; y < gridManager.levelData.grid_height; y++)
+        for (int y = 0; y < LevelData.grid_height; y++)
         {
-            for (int x = 0; x < gridManager.levelData.grid_width; x++)
+            for (int x = 0; x < LevelData.grid_width; x++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
 

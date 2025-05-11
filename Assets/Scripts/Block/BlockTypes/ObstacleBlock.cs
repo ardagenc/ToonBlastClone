@@ -7,18 +7,22 @@ public class ObstacleBlock : Block
 
     public bool damagable;
     public int health = 1;
+
+    bool isDestroyed = false;
     public void TakeDamage()
     {
         health--;
 
-        if (health <= 0)
+        if (health <= 0 && !isDestroyed)
         {            
+            isDestroyed = true;
             DestroyBlock();
         }
     }
     private void DestroyBlock()
     {        
         onObstacleDestroyed?.Invoke(blockType);
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        PoolManager.Instance.ReturnBlock(this, BlockType);
     }
 }

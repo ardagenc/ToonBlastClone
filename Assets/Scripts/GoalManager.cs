@@ -1,8 +1,11 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class GoalManager : MonoBehaviour
 {
+    public static event Action<bool> onLevelFinished;
+
     [SerializeField] LevelManager levelManager;
 
     int totalObstacleAmount;
@@ -10,20 +13,15 @@ public class GoalManager : MonoBehaviour
     private void OnEnable()
     {
         ObstacleBlock.onObstacleDestroyed += OnObstacleDestroyed;
-        SelectionManager.onMatchFound += OnMatchFound;
+        MatchManager.onMatchFound += OnMatchFound;
         LevelManager.onLevelGenerated += OnLevelGenerated;
         
     }
     private void OnDisable()
     {
         ObstacleBlock.onObstacleDestroyed -= OnObstacleDestroyed;
-        SelectionManager.onMatchFound -= OnMatchFound;
+        MatchManager.onMatchFound -= OnMatchFound;
         LevelManager.onLevelGenerated -= OnLevelGenerated;
-
-    }
-    private void Update()
-    {
-        Debug.Log(levelManager.Level.moveCount);
 
     }
     private void OnLevelGenerated()
@@ -46,11 +44,11 @@ public class GoalManager : MonoBehaviour
         
         if (totalObstacleAmount == 0 && levelManager.Level.moveCount >= 0)
         {
-            Debug.Log("WON");
+            onLevelFinished?.Invoke(true);
         }
         else if (totalObstacleAmount > 0 && levelManager.Level.moveCount == 0)
         {
-            Debug.Log("LOST");
+            onLevelFinished?.Invoke(false);
         }
     }
 
